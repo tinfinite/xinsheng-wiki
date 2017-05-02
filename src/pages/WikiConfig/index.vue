@@ -55,27 +55,6 @@
         }
       }
     }
-    .author-list {
-      width: 400px;
-      margin: 50px auto;
-
-      .list-con {
-        height: 110px;
-        overflow: hidden;
-
-        .git-link {
-          margin-left: 30px;
-        }
-      }
-
-      .more {
-        height: auto;
-      }
-      .show-more {
-        float: right;
-        color: #bbb;
-      }
-    }
     .add-author {
       width: 400px;
       margin: 20px auto;
@@ -110,14 +89,6 @@
         <button class="sign-in" @click="signIn">登录</button>
       </div>
     </div>
-    <div class="author-list">
-      <div class="list-con" :class="{ 'more': isShowMore }">
-        <div class="item" v-for="item in 8">
-          <span class="author">张军祥</span><span class="git-link">git@github.com:tinfinite/saas-h5-act.git</span>
-        </div>
-      </div>
-      <span v-show="!isShowMore" class="show-more" @click="isShowMore = true">展开全部</span>
-    </div>
     <h4 class="sub-title">添加新作者</h4>
     <div class="add-author">
       <label>作者:</label>
@@ -139,8 +110,7 @@
         passWord: '',
         author: '',
         gitUrl: '',
-        showLogin: false,
-        isShowMore: false
+        showLogin: false
       }
     },
     created () {
@@ -157,7 +127,7 @@
           return
         }
         Request.post({
-          url: 'http://7efcf792.ngrok.io/api/login',
+          url: 'http://localhost:8000/api/login',
           data: {
             username: self.userName,
             password: self.passWord
@@ -171,8 +141,12 @@
       },
       addWiki () {
         let self = this
+        if (!self.author || !self.gitUrl) {
+          window.alert('名字和项目地址不能为空')
+          return
+        }
         Request.post({
-          url: 'http://7efcf792.ngrok.io/api/add',
+          url: 'http://localhost:8000/api/add',
           headers: {
             'Authorization': Cookie.getCookie('token')
           },
@@ -182,6 +156,7 @@
           }
         }, (res) => {
           console.log('success', res)
+          window.alert('添加成功！')
         }, (err) => {
           console.log('err', err)
         })

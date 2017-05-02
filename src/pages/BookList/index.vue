@@ -31,6 +31,12 @@
           left: 80px;
           font-size: 14px;
         }
+        .book-author {
+          position: absolute;
+          top: 60px;
+          left: 80px;
+          font-size: 14px;
+        }
         .description {
           color: #fff;
           font-size: 14px;
@@ -62,8 +68,17 @@
           <img src="http://o4a7cbihz.qnssl.com/cover/15a7cea0-948f-46ad-aef4-d4b1f9c80d0a?imageView2/5/w/50/h/50">
         </div>
         <span class="book-title">{{ item.config.name || '没有书名' }}</span>
+        <span class="book-author">{{ item.author || '无名' }}</span>
         <span class="description">{{ item.config.description || '书籍简介' }}</span>
       </div>
+<!--       <div class="book-item" v-for="item in wikiList" @click="toDetail(item)">
+        <div class="book-pic">
+          <img src="http://o4a7cbihz.qnssl.com/cover/15a7cea0-948f-46ad-aef4-d4b1f9c80d0a?imageView2/5/w/50/h/50">
+        </div>
+        <span class="book-title">没有书名</span>
+        <span class="book-author">无名</span>
+        <span class="description">书籍简介</span>
+      </div> -->
     </div>
   </div>
 </template>
@@ -84,7 +99,7 @@ export default {
     getWikiList () {
       let self = this
       Request.get({
-        url: 'http://7efcf792.ngrok.io/api/wiki'
+        url: 'http://c0da1069.ngrok.io/api/wiki'
       }, (res) => {
         self.wikiList = res.result
       }, (err) => {
@@ -92,7 +107,8 @@ export default {
       })
     },
     toDetail (item) {
-      this.$router.push({name: 'WikiDetail', query: { wid: item._id }})
+      // this.$router.push({name: 'WikiDetail', query: { wid: item._id }})
+      window.location.href = 'http://c0da1069.ngrok.io/api/repos/' + item._id + '/_book/index.html'
     }
   }
 }

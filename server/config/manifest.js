@@ -5,7 +5,7 @@ const envKey = (key) => {
     development: {
       host: 'localhost',
       port: 8000,
-      mongo: 'mongodb://localhost:27017/wiki'
+      mongo: 'mongodb://192.168.1.91:27017/wiki'
     },
     uat: {
       host: 'localhost',
