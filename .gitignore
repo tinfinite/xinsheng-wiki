@@ -1,3 +1,5 @@
 server/repos/
 node_modules/
-server/.tern-project
+.tern-project
+.tern-port
+.DS_Store
