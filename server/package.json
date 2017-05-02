@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "gitbook": "^3.2.2",
     "glue": "^4.1.0",
     "good": "^7.1.0",
     "good-console": "^6.4.0",
@@ -22,7 +23,8 @@
     "jsonwebtoken": "^7.4.0",
     "mongo-models": "^1.1.0",
     "nodegit": "^0.18.2",
-    "password-hash": "^1.2.2"
+    "password-hash": "^1.2.2",
+    "shelljs": "^0.7.7"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
