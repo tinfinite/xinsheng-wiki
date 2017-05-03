@@ -1,4 +1,8 @@
 <style lang="less">
+  #app, body, html {
+    margin: 0;
+    padding: 0;
+  }
   .book-list {
     .title {
       padding: 30px 50px;
@@ -64,26 +68,18 @@
     <div class="list-con">
       <div class="book-item" v-for="item in wikiList" @click="toDetail(item)" v-if="item.config">
         <div class="book-pic">
-          <img :src="item.config.cover || 'http://o4a7cbihz.qnssl.com/cover/15a7cea0-948f-46ad-aef4-d4b1f9c80d0a?imageView2/5/w/320/h/320'">
-          <img src="http://o4a7cbihz.qnssl.com/cover/15a7cea0-948f-46ad-aef4-d4b1f9c80d0a?imageView2/5/w/50/h/50">
+          <img :src="item.config.cover || '//o4a7cbihz.qnssl.com/cover/7b5c8855-9a35-4c59-9432-7b3c0788f50c?imageView2/5/w/50/h/50'" @load="ckeckImg($event)">
         </div>
-        <span class="book-title">{{ item.config.name || '没有书名' }}</span>
-        <span class="book-author">{{ item.author || '无名' }}</span>
-        <span class="description">{{ item.config.description || '书籍简介' }}</span>
+        <span class="book-title">{{ item.config.name }}</span>
+        <span class="book-author">{{ item.author }}</span>
+        <span class="description">{{ item.config.description }}</span>
       </div>
-<!--       <div class="book-item" v-for="item in wikiList" @click="toDetail(item)">
-        <div class="book-pic">
-          <img src="http://o4a7cbihz.qnssl.com/cover/15a7cea0-948f-46ad-aef4-d4b1f9c80d0a?imageView2/5/w/50/h/50">
-        </div>
-        <span class="book-title">没有书名</span>
-        <span class="book-author">无名</span>
-        <span class="description">书籍简介</span>
-      </div> -->
     </div>
   </div>
 </template>
 <script>
 import Request from '../../utils/request'
+import $ from 'jquery'
 
 export default {
   name: 'book-list',
@@ -99,7 +95,7 @@ export default {
     getWikiList () {
       let self = this
       Request.get({
-        url: 'http://c0da1069.ngrok.io/api/wiki'
+        url: 'http://localhost:8000/api/wiki'
       }, (res) => {
         self.wikiList = res.result
       }, (err) => {
@@ -107,8 +103,17 @@ export default {
       })
     },
     toDetail (item) {
-      // this.$router.push({name: 'WikiDetail', query: { wid: item._id }})
-      window.location.href = 'http://c0da1069.ngrok.io/api/repos/' + item._id + '/_book/index.html'
+      window.location.href = 'http://localhost:8000/api/repos/' + item._id + '/_book/index.html'
+    },
+    ckeckImg (event) {
+      let target = event.target
+      let width = parseInt($(target).css('width'))
+      let height = parseInt($(target).css('height'))
+      if (width <= height) {
+        $(target).css('width', '100%')
+      } else {
+        $(target).css('height', '100%')
+      }
     }
   }
 }

@@ -3,7 +3,7 @@ const Git = require('nodegit');
 const shell = require("shelljs");
 
 module.exports.payload = {
-  handler: (request, reply) => {
+  handler: async (request, reply) => {
     try {
       const Repo = request.server.plugins['hapi-mongo-models'].Repo;
       const { payload } = request.payload;
@@ -18,9 +18,9 @@ module.exports.payload = {
       const out = path.join(repoDir, 'wiki');
       const repository = await Git.Repository.open(repoDir);
 
-        await repository.fetchAll();
-        await repository.mergeBranches('master', 'origin/master');
-        
+      await repository.fetchAll();
+      await repository.mergeBranches('master', 'origin/master');
+
       shell.exec(`gitbook build ${repoDir} --out=${out}`);
       
       reply('ok');

@@ -1,6 +1,9 @@
 <style lang="less">
   .wiki-config {
-    .title, .sub-title {
+    height: 100vh;
+    background-color: #eee;
+    .title {
+      margin: 0;
       padding: 30px;
       text-align: center;
     }
@@ -39,7 +42,7 @@
           margin-left: 18px;
           border: 1px solid #ccc;
           border-radius: 4px;
-          color: #555;
+          color: #aaa;
         }
 
         .sign-in {
@@ -57,29 +60,39 @@
     }
     .add-author {
       width: 400px;
-      margin: 20px auto;
+      padding: 30px;
+      margin: 15vh auto;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #fff;
+
       label {
         display: block;
         width: 100%;
         margin-top: 30px;
       }
       input {
-        width: 300px;
+        width: 400px;
         height: 30px;
         border: 1px solid #ccc;
         border-radius: 4px;
         color: #555;
       }
       button {
-        width: 80px;
-        height: 30px;
+        margin-top: 30px;
+        width: 400px;
+        height: 38px;
+        border: 1px solid rgba(27,31,35,0.2);
+        border-radius: 4px;
+        color: #fff;
+        background-color: #34d058;
       }
     }
   }
 </style>
 <template>
 	<div class="wiki-config">
-    <h2 class="title">wiki配置</h2>
+    <h2 class="title">wiki 关联配置</h2>
     <div class="login-con" v-show="showLogin">
       <div class="login">
         <label>用户名：</label>
@@ -89,13 +102,12 @@
         <button class="sign-in" @click="signIn">登录</button>
       </div>
     </div>
-    <h4 class="sub-title">添加新作者</h4>
     <div class="add-author">
       <label>作者:</label>
       <input type="text" v-model="author" placeholder=" 请输入作者名字~"></input>
       <label>git项目地址:</label>
       <input type="text" v-model="gitUrl" placeholder=" 请输入书籍关联的git项目的https地址~"></input>
-      <button @click="addWiki">添加</button>
+      <button @click="addWiki">添加到书籍列表</button>
     </div>
 	</div>
 </template>
@@ -155,6 +167,13 @@
             url: self.gitUrl
           }
         }, (res) => {
+          if (res.statusCode === 0) {
+            Cookie.delCookie('token', '/', 'xinsheng-wiki.com')
+            if (window.confirm('登录信息失效，请重新登录！')) {
+              window.location.reload()
+            }
+            return
+          }
           console.log('success', res)
           window.alert('添加成功！')
         }, (err) => {
