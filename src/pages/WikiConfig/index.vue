@@ -4,7 +4,8 @@
     background-color: #eee;
     .title {
       margin: 0;
-      padding: 30px;
+      padding: 15vh;
+      min-width: 160px;
       text-align: center;
     }
     .login-con {
@@ -18,18 +19,19 @@
       .login {
         width: 300px;
         height: 300px;
+        padding: 20px;
         border: 1px solid #ccc;
         background-color: #fff;
         position: absolute;
         top: 50%;
         left: 50%;
-        margin-left: -150px;
-        margin-top: -150px;
+        margin-left: -170px;
+        margin-top: -170px;
         z-index: 9999;
 
         label {
           display: block;
-          width: 100%;
+          width: 240px;
           padding: 10px 20px;
           margin-top: 10px;
           color: #333;
@@ -42,7 +44,7 @@
           margin-left: 18px;
           border: 1px solid #ccc;
           border-radius: 4px;
-          color: #aaa;
+          color: #333;
         }
 
         .sign-in {
@@ -53,15 +55,20 @@
           text-align: center;
           line-height: 30px;
           margin: 40px auto;
-          border: 1px solid #ccc;
+          border: 1px solid rgba(27,31,35,0.2);
           border-radius: 5px;
+          background-color: #34d058;
+
+          &:active, &:hover {
+            background-color: #28a745;
+          }
         }
       }
     }
     .add-author {
       width: 400px;
-      padding: 30px;
-      margin: 15vh auto;
+      padding: 40px;
+      margin: 0 auto;
       border: 1px solid #ccc;
       border-radius: 5px;
       background-color: #fff;
@@ -69,23 +76,47 @@
       label {
         display: block;
         width: 100%;
-        margin-top: 30px;
+        margin-top: 20px;
+        margin-bottom: 15px;
       }
       input {
         width: 400px;
         height: 30px;
+        padding: 2px;
         border: 1px solid #ccc;
         border-radius: 4px;
         color: #555;
       }
+
+      input::-webkit-input-placeholder { 
+        color: #aaa;
+        font-size: 12px;
+      }
+      input::-moz-placeholder {
+        color:  #aaa;
+        font-size: 12px;
+      }
+      input::-moz-placeholder {
+        color:  #aaa;
+        font-size: 12px;
+      }
+      input::-ms-input-placeholder {
+        color: #aaa;
+        font-size: 12px;
+      }
+
       button {
-        margin-top: 30px;
-        width: 400px;
+        margin-top: 40px;
+        width: 404px;
         height: 38px;
         border: 1px solid rgba(27,31,35,0.2);
         border-radius: 4px;
         color: #fff;
         background-color: #34d058;
+
+        &:active, &:hover {
+          background-color: #28a745;
+        }
       }
     }
   }
@@ -98,7 +129,7 @@
         <label>用户名：</label>
         <input type="text" v-model="userName"></input>
         <label>密&nbsp;&nbsp;&nbsp;码：</label>
-        <input type="password" v-model="passWord"></input>
+        <input type="password" v-model="passWord" @keydown="keyDown($event)"></input>
         <button class="sign-in" @click="signIn">登录</button>
       </div>
     </div>
@@ -126,7 +157,7 @@
       }
     },
     created () {
-      let token = Cookie.getCookie('token')
+      let token = Cookie.getCookie('wiki_token')
       if (!token) {
         this.showLogin = true
       }
@@ -145,7 +176,7 @@
             password: self.passWord
           }
         }, (res) => {
-          Cookie.setCookie('token', res.result, 'xinsheng-wiki.com', 10)
+          Cookie.setCookie('wiki_token', res.result, 'wiki.xinshengdaxue.com', 10)
           self.showLogin = false
         }, (err) => {
           console.log('err', err)
@@ -160,7 +191,7 @@
         Request.post({
           url: 'http://localhost:8000/api/add',
           headers: {
-            'Authorization': Cookie.getCookie('token')
+            'Authorization': Cookie.getCookie('wiki_token')
           },
           data: {
             author: self.author,
@@ -168,7 +199,7 @@
           }
         }, (res) => {
           if (res.statusCode === 0) {
-            Cookie.delCookie('token', '/', 'xinsheng-wiki.com')
+            Cookie.delCookie('wiki_token', '/', 'wiki.xinshengdaxue.com')
             if (window.confirm('登录信息失效，请重新登录！')) {
               window.location.reload()
             }
@@ -179,6 +210,12 @@
         }, (err) => {
           console.log('err', err)
         })
+      },
+      keyDown (e) {
+        console.log(e.keyCode)
+        if (e.keyCode === 13) {
+          this.signIn()
+        }
       }
     }
   }
