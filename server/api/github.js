@@ -15,13 +15,16 @@ module.exports.payload = {
       }
       
       const repoDir = path.join(__dirname, '..', 'repos', repo._id.toString());
-      const out = path.join(repoDir, 'wiki');
       const repository = await Git.Repository.open(repoDir);
 
       await repository.fetchAll();
       await repository.mergeBranches('master', 'origin/master');
 
-      shell.exec(`gitbook build ${repoDir} --out=${out}`);
+      const configFile = path.join(repoDir, 'config.json');
+      repo.config = require(configFile);
+      Repo.updateById(repo._id, repo);
+
+      shell.exec(`gitbook build ${repoDir}`);
       
       reply('ok');
     } catch (err) {
