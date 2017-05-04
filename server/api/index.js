@@ -29,7 +29,7 @@ exports.register = (plugin, options, next) => {
       path: '/repos/{dir*}',
       handler: {
         directory: { 
-          path: 'repos/'
+          path: './server/repos'
         }
       }
     }

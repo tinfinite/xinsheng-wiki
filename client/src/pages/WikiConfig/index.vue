@@ -177,7 +177,7 @@
           }
         }, (res) => {
           if (res.statusCode === 1) {
-            Cookie.setCookie('wiki_token', res.result, 'wiki.xinshengdaxue.com', 10)
+            Cookie.setCookie('wiki_token', res.result, window.location.host, 10)
             self.showLogin = false
           } else {
             window.alert('账号或密码错误！')
@@ -203,7 +203,7 @@
           }
         }, (res) => {
           if (res.statusCode === 401) {
-            Cookie.delCookie('wiki_token', '/', 'wiki.xinshengdaxue.com')
+            Cookie.delCookie('wiki_token', '/', window.location.host)
             if (window.confirm('登录信息失效，请重新登录！')) {
               window.location.reload()
             }

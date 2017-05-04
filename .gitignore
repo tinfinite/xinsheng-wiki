@@ -9,3 +9,4 @@ client/server/repos/
 client/node_modules/
 .tern-port
 .tern-project
+repos
