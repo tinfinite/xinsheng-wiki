@@ -17,7 +17,7 @@ Glue.compose(manifest, { relativeTo: __dirname }, (err, server) => {
 
   server.start(() => {
     console.log('Server is listening on ', server.info.uri.toLowerCase());
-    console.log(server.connections._router);
+    
     process.on('uncaughtException', err => {
       console.log('uncatchd exception, ', err.message, err);
     });

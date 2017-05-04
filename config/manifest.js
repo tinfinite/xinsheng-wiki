@@ -50,6 +50,9 @@ const manifest = {
       options: { routes: { prefix: '/api' } }
     },
     {
+      plugin: './home'
+    },
+    {
       plugin: {
         register: 'hapi-mongo-models',
         options: {
