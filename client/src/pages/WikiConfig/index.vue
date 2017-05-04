@@ -176,8 +176,12 @@
             password: self.passWord
           }
         }, (res) => {
-          Cookie.setCookie('wiki_token', res.result, 'wiki.xinshengdaxue.com', 10)
-          self.showLogin = false
+          if (res.statusCode === 1) {
+            Cookie.setCookie('wiki_token', res.result, 'wiki.xinshengdaxue.com', 10)
+            self.showLogin = false
+          } else {
+            window.alert('账号或密码错误！')
+          }
         }, (err) => {
           console.log('err', err)
         })
@@ -198,11 +202,15 @@
             url: self.gitUrl
           }
         }, (res) => {
-          if (res.statusCode === 0) {
+          if (res.statusCode === 401) {
             Cookie.delCookie('wiki_token', '/', 'wiki.xinshengdaxue.com')
             if (window.confirm('登录信息失效，请重新登录！')) {
               window.location.reload()
             }
+            return
+          }
+          if (res.statusCode === 400) {
+            window.alert('添加失败！')
             return
           }
           console.log('success', res)
