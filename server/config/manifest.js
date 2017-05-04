@@ -62,7 +62,7 @@ const manifest = {
           },
           autoIndex: false,
           models: {
-            Repo: './models/repo'
+            Repo: './server/models/repo'
           }
         }
       }

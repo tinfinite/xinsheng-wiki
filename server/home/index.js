@@ -1,6 +1,7 @@
 const path = require('path');
 
-const index = path.join(__dirname, '../client/dist/index.html');
+const list = path.join(__dirname, '../../client/dist/BookList.html');
+const config = path.join(__dirname, '../../client/dist/WikiConfig.html');
 
 exports.register = (plugin, options, next) => {
   plugin.route([
@@ -8,7 +9,14 @@ exports.register = (plugin, options, next) => {
       method: 'GET',
       path: '/',
       handler: {
-        file: index
+        file: list
+      }
+    },
+    {
+      method: 'GET',
+      path: '/config',
+      handler: {
+        file: config
       }
     },
     {
@@ -16,7 +24,7 @@ exports.register = (plugin, options, next) => {
       path: '/static/{file*}',
       handler: {
         directory: { 
-          path: './client/dist/static'
+          path: path.join(__dirname, '../../client/dist/static')
         }
       }
     }]);
@@ -25,5 +33,5 @@ exports.register = (plugin, options, next) => {
 };
 
 exports.register.attributes = {
-  name: 'static'
+  name: 'home'
 };

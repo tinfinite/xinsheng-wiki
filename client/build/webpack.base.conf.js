@@ -14,8 +14,8 @@ var _exitsDir = function (p) {
 
 var _getPageName = function (p) {
   var page_path = path.resolve(__dirname, p),
-    dirs = fs.readdirSync(page_path),
-    result = [];
+      dirs = fs.readdirSync(page_path),
+      result = [];
 
   for (var i = 0, len = dirs.length; i < len; i++) {
     if (_exitsDir(page_path + '/' + dirs[i])) {
@@ -26,19 +26,17 @@ var _getPageName = function (p) {
 }
 
 var getEntry = function () {
-  var result = [],
-    pages = _getPageName('../src/pages')
+  var result = {},
+      pages = _getPageName('../src/pages')
 
   for (var i = 0, len = pages.length; i < len; i++) {
-    result.push('./src/pages/' + pages[i] + '/main.js')
+    result[pages[i]] = './src/pages/' + pages[i] + '/main.js'
   }
   return result
 }
 
 module.exports = {
-  entry: {
-    app: getEntry()
-  },
+  entry: getEntry(),
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
