@@ -1,4 +1,5 @@
 var path = require('path')
+var fs = require('fs')
 var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
@@ -7,13 +8,40 @@ function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
+var _exitsDir = function (p) {
+  return fs.statSync(p).isDirectory()
+}
+
+var _getPageName = function (p) {
+  var page_path = path.resolve(__dirname, p),
+    dirs = fs.readdirSync(page_path),
+    result = [];
+
+  for (var i = 0, len = dirs.length; i < len; i++) {
+    if (_exitsDir(page_path + '/' + dirs[i])) {
+      result.push(dirs[i]);
+    }
+  }
+  return result
+}
+
+var getEntry = function () {
+  var result = [],
+    pages = _getPageName('../src/pages')
+
+  for (var i = 0, len = pages.length; i < len; i++) {
+    result.push('./src/pages/' + pages[i] + '/main.js')
+  }
+  return result
+}
+
 module.exports = {
   entry: {
-    app: './src/main.js'
+    app: getEntry()
   },
   output: {
     path: config.build.assetsRoot,
-    filename: '[name].js',
+    filename: '[name]/index.js',
     publicPath: process.env.NODE_ENV === 'production'
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
