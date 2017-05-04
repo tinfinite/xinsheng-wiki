@@ -122,7 +122,7 @@
   }
 </style>
 <template>
-	<div class="wiki-config">
+  <div class="wiki-config">
     <h2 class="title">wiki 关联配置</h2>
     <div class="login-con" v-show="showLogin">
       <div class="login">
@@ -140,7 +140,7 @@
       <input type="text" v-model="gitUrl" placeholder=" 请输入书籍关联的git项目的https地址~"></input>
       <button @click="addWiki">添加到书籍列表</button>
     </div>
-	</div>
+  </div>
 </template>
 <script>
   import Request from '../../utils/request'
@@ -153,7 +153,8 @@
         passWord: '',
         author: '',
         gitUrl: '',
-        showLogin: false
+        showLogin: false,
+        rqStatus: true
       }
     },
     created () {
@@ -188,10 +189,15 @@
       },
       addWiki () {
         let self = this
+        if (!self.rqStatus) {
+          window.alert('处理中，请稍后！')
+          return
+        }
         if (!self.author || !self.gitUrl) {
           window.alert('名字和项目地址不能为空')
           return
         }
+        self.rqStatus = false
         Request.post({
           url: 'http://localhost:8000/api/add',
           headers: {
@@ -214,6 +220,7 @@
             return
           }
           console.log('success', res)
+          self.rqStatus = true
           window.alert('添加成功！')
         }, (err) => {
           console.log('err', err)
