@@ -79,6 +79,7 @@
 </template>
 <script>
 import Request from '../../utils/request'
+import PREFIX from '../../utils/config'
 import $ from 'jquery'
 
 export default {
@@ -95,7 +96,7 @@ export default {
     getWikiList () {
       let self = this
       Request.get({
-        url: 'http://localhost:8000/api/wiki'
+        url: '/api/wiki'
       }, (res) => {
         self.wikiList = res.result
       }, (err) => {
@@ -103,7 +104,7 @@ export default {
       })
     },
     toDetail (item) {
-      window.location.href = 'http://localhost:8000/api/repos/' + item._id + '/_book/index.html'
+      window.location.href = PREFIX + '/api/repos/' + item._id + '/_book/index.html'
     },
     ckeckImg (event) {
       let target = event.target

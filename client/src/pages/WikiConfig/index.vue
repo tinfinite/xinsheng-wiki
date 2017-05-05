@@ -171,7 +171,7 @@
           return
         }
         Request.post({
-          url: 'http://localhost:8000/api/login',
+          url: '/api/login',
           data: {
             username: self.userName,
             password: self.passWord
@@ -199,7 +199,7 @@
         }
         self.rqStatus = false
         Request.post({
-          url: 'http://localhost:8000/api/add',
+          url: '/api/add',
           headers: {
             'Authorization': Cookie.getCookie('wiki_token')
           },
@@ -227,7 +227,6 @@
         })
       },
       keyDown (e) {
-        console.log(e.keyCode)
         if (e.keyCode === 13) {
           this.signIn()
         }
